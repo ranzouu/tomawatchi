@@ -140,15 +140,27 @@ public struct BattleView: View {
     
     private func setupOpponent() {
         let opponentStages: [EvolutionStage] = [
+            // Fogo
             .tomaDrake, .tomaFlaris, .tomaIgnis, .tomaCoal,
             .drakeLord, .pyroBeast, .shadowDrake,
-            .kaiserDrake, .kaiserBeast, .diabloDrake
+            .kaiserDrake, .kaiserBeast, .diabloDrake,
+            // Água
+            .aquapup, .finlet, .shelly, .jelly,
+            .tsunamihound, .wavecrest, .deepmaw,
+            .neptunehound, .oceanking, .leviathan,
+            // Planta
+            .sprout, .thorn, .flutter, .twig,
+            .woodtitan, .canopybeast, .thornviper,
+            .yggdrasiltitan, .forestguardian, .basiliskwood
         ]
         opponentStage = opponentStages.randomElement() ?? .tomaDrake
         
         let names = [
             "Agumon", "Devimon", "Greymon", "Numemon", 
-            "Sukamon", "Betamon", "Kabuterimon", "MetalGreymon"
+            "Sukamon", "Betamon", "Kabuterimon", "MetalGreymon",
+            "Gabumon", "Garurumon", "Palmon", "Togemon",
+            "Patamon", "Angemon", "Gomamon", "Ikkakumon",
+            "Biyomon", "Birdramon", "Tentomon", "Kabuterimon"
         ]
         let name = names.randomElement() ?? "Challenger"
         opponentName = "\(opponentStage.displayName) \(name)"

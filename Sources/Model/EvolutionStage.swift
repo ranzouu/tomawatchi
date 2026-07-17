@@ -142,7 +142,35 @@ public enum EvolutionStage: String, Codable, CaseIterable {
         }
     }
     
+    public var element: SpeciesElement {
+        switch self {
+        // --- FOGO ---
+        case .egg1, .flapor, .pyrop, .tomaDrake, .tomaFlaris, .tomaIgnis, .tomaCoal,
+             .drakeLord, .pyroBeast, .shadowDrake, .solPhoenix, .gryphFlame, .doomPhoenix, .ignisShaman, .lavaRex, .venomCinder, .coalTitan, .sulfurHound, .slagPile,
+             .kaiserDrake, .kaiserBeast, .diabloDrake, .astroPhoenix, .gryphOverlord, .necroPhoenix, .ignisArchmage, .titanosaurus, .basiliskFlame, .omegaTitan, .cerberusSulfur, .plutoSlag:
+            return .fire
+            
+        // --- ÁGUA ---
+        case .egg2, .bubble, .drop, .aquapup, .finlet, .shelly, .jelly,
+             .tsunamihound, .wavecrest, .deepmaw, .aquapegasus, .coralfin, .abysssark, .tortureshield, .reefkraken, .toxicshell, .hydromage, .mistwolf, .poisonjelly,
+             .neptunehound, .oceanking, .leviathan, .poseidonwing, .coralemperor, .krakenabyss, .aegistortoise, .abyssalkraken, .nukelist, .poseidonmage, .fenrirmist, .hadesjelly:
+            return .water
+            
+        // --- PLANTA ---
+        case .egg3, .seed, .leaf, .sprout, .thorn, .flutter, .twig,
+             .woodtitan, .canopybeast, .thornviper, .bloomdrake, .cactusthorn, .sporefungus, .sylvanfly, .junglehunter, .waspvenom, .treemage, .rootbeast, .rotwight,
+             .yggdrasiltitan, .forestguardian, .basiliskwood, .quetzalcoatl, .megacactus, .toxicspore, .monarchfly, .pantherjungle, .hornetempress, .druidarchmage, .gaiaelemental, .necrorot:
+            return .nature
+        }
+    }
+    
     public var displayName: String {
         return self.rawValue
     }
+}
+
+public enum SpeciesElement: String, Codable {
+    case fire = "Fogo"
+    case water = "Água"
+    case nature = "Natureza"
 }

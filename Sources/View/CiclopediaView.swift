@@ -81,17 +81,18 @@ public struct CiclopediaView: View {
     }
     
     private func stageDescription(stage: EvolutionStage) -> String {
+        let el = stage.element.rawValue
         switch stage.tier {
         case .egg:
-            return "Um ovo quente e cheio de energia."
+            return "Um ovo do elemento \(el)."
         case .baby:
-            return "Muito pequeno, faminto e barulhento."
+            return "Um bebê fofo de \(el)."
         case .child:
-            return "Jovem e ávido por treinos ativos."
+            return "Jovem e ávido por treinos de \(el)."
         case .adult:
-            return "Guerreiro crescido da linhagem de fogo."
+            return "Guerreiro crescido da linhagem de \(el)."
         case .perfect:
-            return "A evolução perfeita e absoluta."
+            return "A evolução perfeita e absoluta de \(el)."
         }
     }
 }
