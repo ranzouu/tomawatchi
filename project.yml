@@ -1,0 +1,58 @@
+name: TomaWatchi
+options:
+  bundleIdPrefix: com.rayson.tomawatchi
+  deploymentTarget:
+    watchOS: "10.0"
+    iOS: "17.0"
+    macOS: "14.0"
+
+targets:
+  TomaWatchi:
+    type: application
+    platform: watchOS
+    sources:
+      - path: Sources
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_WKWatchKitApp: true
+        INFOPLIST_KEY_WKWatchOnly: true
+        PRODUCT_BUNDLE_IDENTIFIER: com.rayson.tomawatchi.watchapp
+        PRODUCT_NAME: TomaWatchi
+        MARKETING_VERSION: 1.1.0
+        CURRENT_PROJECT_VERSION: 2
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "O TomaWatchi lê seus passos diários para curar e exercitar seu Pet!"
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "O TomaWatchi registra suas atividades físicas."
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos."
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!"
+        INFOPLIST_KEY_NSBonjourServices:
+          - "_tomawatchi-btl._tcp"
+          - "_tomawatchi-btl._udp"
+
+  TomaWatchi_macOS:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+        PRODUCT_BUNDLE_IDENTIFIER: com.rayson.tomawatchi.macapp
+        PRODUCT_NAME: TomaWatchi
+        MARKETING_VERSION: 1.1.0
+        CURRENT_PROJECT_VERSION: 2
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos."
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!"
+        INFOPLIST_KEY_NSBonjourServices:
+          - "_tomawatchi-btl._tcp"
+          - "_tomawatchi-btl._udp"
+
+  TomaWatchiTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Sources
+      - path: Tests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true

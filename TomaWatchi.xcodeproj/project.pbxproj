@@ -1,0 +1,564 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B8C7939948A3F493BC644F2 /* TomaWatchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */; };
+		12FBE57644A8EF3E20C468C4 /* PetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E7EDC172E232E6D006580B /* PetTests.swift */; };
+		1748DE8D022B6E2644741D7B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
+		1DFD7F70E21441FA339CE470 /* Sprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA30C827751D8921D27DE06 /* Sprites.swift */; };
+		2FA023A66636AE9F4160C62D /* StatusDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */; };
+		3BB674033C6925A76D60746B /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
+		3EBE9463FB85172CA1C3B00D /* TomaWatchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */; };
+		40617BD7F4F2487F18FC7B81 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632F3C9DCA23DEF64747261B /* Pet.swift */; };
+		42A52DD8AC86A80867C208B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
+		45242E66F4C4E1C18FDFF724 /* TomaWatchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */; };
+		4C4CCA23D854E4050E53CDC6 /* MultipeerBattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */; };
+		5331D2FFA0387A5AC9830D3A /* MultipeerBattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */; };
+		64D3373D02936D91CB4A576C /* EvolutionStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6579B87012C4B816260359D /* EvolutionStage.swift */; };
+		849DE841441383E73E7439DE /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
+		86B7459AD3E73F16C5217B2A /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655F7E903513D5F52F187A1 /* BattleView.swift */; };
+		900F075F0EF4873D57D33513 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
+		93D10CBD34F1E5F5663428E5 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
+		99472DE5D1EC8209524573D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
+		9E6B3F80A3BEC9378B6E64A0 /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655F7E903513D5F52F187A1 /* BattleView.swift */; };
+		AB9905813690209F50ED5D97 /* Sprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA30C827751D8921D27DE06 /* Sprites.swift */; };
+		B12FFFB1F190E74A6878A2B0 /* StatusDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */; };
+		B48A9C752A170C022051E348 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632F3C9DCA23DEF64747261B /* Pet.swift */; };
+		B9538E4439E2CB51C6927AB8 /* Sprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA30C827751D8921D27DE06 /* Sprites.swift */; };
+		B95FB79C644FFA51A9934D47 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632F3C9DCA23DEF64747261B /* Pet.swift */; };
+		B9A499694DA753A8F3B850A7 /* EvolutionStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6579B87012C4B816260359D /* EvolutionStage.swift */; };
+		CF63FD5FE05432685918F4E8 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
+		D5532F1E671AB5241C62B479 /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655F7E903513D5F52F187A1 /* BattleView.swift */; };
+		DD7F6431CD286E7B85D301DA /* EvolutionStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6579B87012C4B816260359D /* EvolutionStage.swift */; };
+		DE45DFD832E9FCFE136CF871 /* MultipeerBattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */; };
+		E535ABC0D42372BC77C48F97 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
+		E575C72D95A03214DA7FEB05 /* StatusDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */; };
+		E83F1CC1767EFCB2787E04C9 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
+		EDDA750D2E4663D4FFC55516 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
+		F7F20080985D1834E54D9C16 /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		101246D80BB290E7435B5ADC /* TomaWatchi_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TomaWatchi_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26E7EDC172E232E6D006580B /* PetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTests.swift; sourceTree = "<group>"; };
+		37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomaWatchiApp.swift; sourceTree = "<group>"; };
+		4064CF68E7EB420743030B9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelSpriteView.swift; sourceTree = "<group>"; };
+		632F3C9DCA23DEF64747261B /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		6C7D43B738F8F3E5FD694DB8 /* TomaWatchiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TomaWatchiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		714D9441809D5AC908082ACE /* CiclopediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CiclopediaView.swift; sourceTree = "<group>"; };
+		754F933A926FCFC619EB298E /* MinigameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinigameView.swift; sourceTree = "<group>"; };
+		8ED8EDCABEEE2538F8A4233D /* TomaWatchi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TomaWatchi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusDetailsView.swift; sourceTree = "<group>"; };
+		BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerBattleView.swift; sourceTree = "<group>"; };
+		CBA30C827751D8921D27DE06 /* Sprites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprites.swift; sourceTree = "<group>"; };
+		E655F7E903513D5F52F187A1 /* BattleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
+		F6579B87012C4B816260359D /* EvolutionStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionStage.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		31F1BA5959F0FBBCABE4CB7B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4064CF68E7EB420743030B9E /* ContentView.swift */,
+				37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */,
+				87B906DB739FCE6AFE002D51 /* Model */,
+				8E5A44BF1F82B7F98311E980 /* View */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		87B906DB739FCE6AFE002D51 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F6579B87012C4B816260359D /* EvolutionStage.swift */,
+				632F3C9DCA23DEF64747261B /* Pet.swift */,
+				CBA30C827751D8921D27DE06 /* Sprites.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8E5A44BF1F82B7F98311E980 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E655F7E903513D5F52F187A1 /* BattleView.swift */,
+				714D9441809D5AC908082ACE /* CiclopediaView.swift */,
+				754F933A926FCFC619EB298E /* MinigameView.swift */,
+				BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */,
+				4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */,
+				BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A10F821F6B4E0B618489018B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				26E7EDC172E232E6D006580B /* PetTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A571E429FC84CC9C1A89E81D = {
+			isa = PBXGroup;
+			children = (
+				31F1BA5959F0FBBCABE4CB7B /* Sources */,
+				A10F821F6B4E0B618489018B /* Tests */,
+				AB4AE3D05B4049F88C5A97CE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB4AE3D05B4049F88C5A97CE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				101246D80BB290E7435B5ADC /* TomaWatchi_macOS.app */,
+				8ED8EDCABEEE2538F8A4233D /* TomaWatchi.app */,
+				6C7D43B738F8F3E5FD694DB8 /* TomaWatchiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5455583C45FE46A6DE19859D /* TomaWatchi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2169C00D102334B57C5E97C /* Build configuration list for PBXNativeTarget "TomaWatchi" */;
+			buildPhases = (
+				EB8EF2CBCE1ADE070828E402 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TomaWatchi;
+			packageProductDependencies = (
+			);
+			productName = TomaWatchi;
+			productReference = 8ED8EDCABEEE2538F8A4233D /* TomaWatchi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		884A05ED6B377CF47F194A01 /* TomaWatchi_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A835DD52B6DEDEFE25A836C0 /* Build configuration list for PBXNativeTarget "TomaWatchi_macOS" */;
+			buildPhases = (
+				69BAC0FD898825475BFD4B74 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TomaWatchi_macOS;
+			packageProductDependencies = (
+			);
+			productName = TomaWatchi_macOS;
+			productReference = 101246D80BB290E7435B5ADC /* TomaWatchi_macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE34F7533FF9719EF6C57D0E /* TomaWatchiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 843B9DA8FC38D5416F8A6A20 /* Build configuration list for PBXNativeTarget "TomaWatchiTests" */;
+			buildPhases = (
+				3CEDA2C4575391CD4C4A9EA8 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TomaWatchiTests;
+			packageProductDependencies = (
+			);
+			productName = TomaWatchiTests;
+			productReference = 6C7D43B738F8F3E5FD694DB8 /* TomaWatchiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EBE039385F6793D53747EE93 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 3BC49423FF855421ECD8BF0B /* Build configuration list for PBXProject "TomaWatchi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A571E429FC84CC9C1A89E81D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AB4AE3D05B4049F88C5A97CE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5455583C45FE46A6DE19859D /* TomaWatchi */,
+				884A05ED6B377CF47F194A01 /* TomaWatchi_macOS */,
+				BE34F7533FF9719EF6C57D0E /* TomaWatchiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3CEDA2C4575391CD4C4A9EA8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86B7459AD3E73F16C5217B2A /* BattleView.swift in Sources */,
+				E535ABC0D42372BC77C48F97 /* CiclopediaView.swift in Sources */,
+				1748DE8D022B6E2644741D7B /* ContentView.swift in Sources */,
+				64D3373D02936D91CB4A576C /* EvolutionStage.swift in Sources */,
+				3BB674033C6925A76D60746B /* MinigameView.swift in Sources */,
+				DE45DFD832E9FCFE136CF871 /* MultipeerBattleView.swift in Sources */,
+				B48A9C752A170C022051E348 /* Pet.swift in Sources */,
+				12FBE57644A8EF3E20C468C4 /* PetTests.swift in Sources */,
+				EDDA750D2E4663D4FFC55516 /* PixelSpriteView.swift in Sources */,
+				1DFD7F70E21441FA339CE470 /* Sprites.swift in Sources */,
+				E575C72D95A03214DA7FEB05 /* StatusDetailsView.swift in Sources */,
+				0B8C7939948A3F493BC644F2 /* TomaWatchiApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69BAC0FD898825475BFD4B74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5532F1E671AB5241C62B479 /* BattleView.swift in Sources */,
+				93D10CBD34F1E5F5663428E5 /* CiclopediaView.swift in Sources */,
+				42A52DD8AC86A80867C208B5 /* ContentView.swift in Sources */,
+				B9A499694DA753A8F3B850A7 /* EvolutionStage.swift in Sources */,
+				849DE841441383E73E7439DE /* MinigameView.swift in Sources */,
+				5331D2FFA0387A5AC9830D3A /* MultipeerBattleView.swift in Sources */,
+				B95FB79C644FFA51A9934D47 /* Pet.swift in Sources */,
+				900F075F0EF4873D57D33513 /* PixelSpriteView.swift in Sources */,
+				AB9905813690209F50ED5D97 /* Sprites.swift in Sources */,
+				2FA023A66636AE9F4160C62D /* StatusDetailsView.swift in Sources */,
+				3EBE9463FB85172CA1C3B00D /* TomaWatchiApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB8EF2CBCE1ADE070828E402 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E6B3F80A3BEC9378B6E64A0 /* BattleView.swift in Sources */,
+				CF63FD5FE05432685918F4E8 /* CiclopediaView.swift in Sources */,
+				99472DE5D1EC8209524573D8 /* ContentView.swift in Sources */,
+				DD7F6431CD286E7B85D301DA /* EvolutionStage.swift in Sources */,
+				F7F20080985D1834E54D9C16 /* MinigameView.swift in Sources */,
+				4C4CCA23D854E4050E53CDC6 /* MultipeerBattleView.swift in Sources */,
+				40617BD7F4F2487F18FC7B81 /* Pet.swift in Sources */,
+				E83F1CC1767EFCB2787E04C9 /* PixelSpriteView.swift in Sources */,
+				B9538E4439E2CB51C6927AB8 /* Sprites.swift in Sources */,
+				B12FFFB1F190E74A6878A2B0 /* StatusDetailsView.swift in Sources */,
+				45242E66F4C4E1C18FDFF724 /* TomaWatchiApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0727B8E95A5D180C4A9DE219 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!";
+				INFOPLIST_KEY_NSBonjourServices = (
+					"_tomawatchi-btl._tcp",
+					"_tomawatchi-btl._udp",
+				);
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "O TomaWatchi lê seus passos diários para curar e exercitar seu Pet!";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "O TomaWatchi registra suas atividades físicas.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos.";
+				INFOPLIST_KEY_WKWatchKitApp = YES;
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.watchapp;
+				PRODUCT_NAME = TomaWatchi;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		08E4685541BA515015B23D3B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		0A59ACAE50FA403CA87A280A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!";
+				INFOPLIST_KEY_NSBonjourServices = (
+					"_tomawatchi-btl._tcp",
+					"_tomawatchi-btl._udp",
+				);
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.macapp;
+				PRODUCT_NAME = TomaWatchi;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		51A3BED1CD0F7B21ECA47DCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.TomaWatchiTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8EC5716E99A0113505D61DDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.TomaWatchiTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A40338A0AFF10FD50E367EFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		B21FF2E78D2DE6F1C4888761 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!";
+				INFOPLIST_KEY_NSBonjourServices = (
+					"_tomawatchi-btl._tcp",
+					"_tomawatchi-btl._udp",
+				);
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.macapp;
+				PRODUCT_NAME = TomaWatchi;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F83F5E8FB2328938F64E5B4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "O TomaWatchi precisa de acesso ao Bluetooth para batalhar diretamente contra outros relógios!";
+				INFOPLIST_KEY_NSBonjourServices = (
+					"_tomawatchi-btl._tcp",
+					"_tomawatchi-btl._udp",
+				);
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "O TomaWatchi lê seus passos diários para curar e exercitar seu Pet!";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "O TomaWatchi registra suas atividades físicas.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "O TomaWatchi precisa de acesso à rede local para parear e batalhar contra amigos próximos.";
+				INFOPLIST_KEY_WKWatchKitApp = YES;
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rayson.tomawatchi.watchapp;
+				PRODUCT_NAME = TomaWatchi;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BC49423FF855421ECD8BF0B /* Build configuration list for PBXProject "TomaWatchi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A40338A0AFF10FD50E367EFA /* Debug */,
+				08E4685541BA515015B23D3B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		843B9DA8FC38D5416F8A6A20 /* Build configuration list for PBXNativeTarget "TomaWatchiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EC5716E99A0113505D61DDF /* Debug */,
+				51A3BED1CD0F7B21ECA47DCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A835DD52B6DEDEFE25A836C0 /* Build configuration list for PBXNativeTarget "TomaWatchi_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A59ACAE50FA403CA87A280A /* Debug */,
+				B21FF2E78D2DE6F1C4888761 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D2169C00D102334B57C5E97C /* Build configuration list for PBXNativeTarget "TomaWatchi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F83F5E8FB2328938F64E5B4A /* Debug */,
+				0727B8E95A5D180C4A9DE219 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EBE039385F6793D53747EE93 /* Project object */;
+}
