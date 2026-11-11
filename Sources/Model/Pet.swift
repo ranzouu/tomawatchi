@@ -1,15 +1,59 @@
 import Foundation
 
+public enum ShopItemType: String, Codable, CaseIterable, Identifiable {
+    case rainCoat = "Capa de Chuva"
+    case premiumVitamin = "Vitamina Premium"
+    case iceCream = "Sorvete Elemental"
+    case toy = "Brinquedo Pixelado"
+    
+    public var id: String { self.rawValue }
+    
+    public var cost: Int {
+        switch self {
+        case .rainCoat: return 20
+        case .premiumVitamin: return 30
+        case .iceCream: return 15
+        case .toy: return 25
+        }
+    }
+}
+
 public enum Weather: String, Codable, CaseIterable {
     case sunny = "Ensolarado"
     case rainy = "Chuvoso"
     case snowy = "Nevando"
+    case thunderstorm = "Tempestade"
+    case heatwave = "Calor Extremo"
     
     public var iconName: String {
         switch self {
         case .sunny: return "sun.max.fill"
         case .rainy: return "cloud.rain.fill"
         case .snowy: return "snowflake"
+        case .thunderstorm: return "bolt.ring.closed"
+        case .heatwave: return "thermometer.sun.fill"
+        }
+    }
+}
+
+public enum BacklightTheme: String, Codable, CaseIterable, Identifiable {
+    case classic
+    case indiglo
+    case amber
+    case virtual
+    case stealth
+    case golden
+    
+    public var id: String { self.rawValue }
+    
+    public var displayName: String {
+        switch self {
+        case .classic: return "VERDE GAMEBOY"
+        case .indiglo: return "AZUL INDIGLO"
+        case .amber: return "LARANJA AMBER"
+        case .virtual: return "VERMELHO VIRTUAL"
+        case .stealth: return "STEALTH OLED"
+        case .golden: return "GOLDEN LCD"
         }
     }
 }
@@ -20,6 +64,10 @@ public struct Pet: Codable, Equatable {
     public var stage: EvolutionStage
     public var age: Int // Em "dias" de jogo
     public var weight: Int // Em gramas
+    
+    // MARK: - Backlight Additions
+    public var currentTheme: BacklightTheme
+    public var unlockedThemes: Set<BacklightTheme>
     
     // MARK: - Attributes (0 a 4)
     public var hunger: Int
@@ -52,6 +100,22 @@ public struct Pet: Codable, Equatable {
     public var weather: Weather
     public var weatherSeconds: Double
     
+    // MARK: - HealthKit & Shop Additions
+    public var points: Int
+    public var rainCoatCount: Int
+    public var premiumVitaminCount: Int
+    public var iceCreamCount: Int
+    public var toyCount: Int
+    
+    public var rainCoatActiveSeconds: Double
+    public var iceCreamActiveSeconds: Double
+    
+    public var lastProcessedSteps: Int
+    public var lastProcessedExercise: Int
+    public var lastProcessedCalories: Double
+    public var lastProcessedSleep: Double
+    public var lastProcessedDate: Date?
+    
     // MARK: - Initializer
     public init(name: String = "Toma", stage: EvolutionStage = .egg1, timeMultiplier: Double = 1.0) {
         self.name = name
@@ -79,6 +143,70 @@ public struct Pet: Codable, Equatable {
         self.stepsApplied = 0
         self.weather = .sunny
         self.weatherSeconds = 0
+        
+        self.points = 0
+        self.rainCoatCount = 0
+        self.premiumVitaminCount = 0
+        self.iceCreamCount = 0
+        self.toyCount = 0
+        
+        self.rainCoatActiveSeconds = 0
+        self.iceCreamActiveSeconds = 0
+        
+        self.lastProcessedSteps = 0
+        self.lastProcessedExercise = 0
+        self.lastProcessedCalories = 0.0
+        self.lastProcessedSleep = 0.0
+        self.lastProcessedDate = nil
+        self.currentTheme = .classic
+        self.unlockedThemes = [.classic]
+    }
+    
+    // MARK: - Decodificador para compatibilidade retroativa
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        stage = try container.decode(EvolutionStage.self, forKey: .stage)
+        age = try container.decode(Int.self, forKey: .age)
+        weight = try container.decode(Int.self, forKey: .weight)
+        hunger = try container.decode(Int.self, forKey: .hunger)
+        strength = try container.decode(Int.self, forKey: .strength)
+        energy = try container.decode(Int.self, forKey: .energy)
+        health = try container.decode(Int.self, forKey: .health)
+        poopCount = try container.decode(Int.self, forKey: .poopCount)
+        isSick = try container.decode(Bool.self, forKey: .isSick)
+        isSleeping = try container.decode(Bool.self, forKey: .isSleeping)
+        isAlive = try container.decode(Bool.self, forKey: .isAlive)
+        careMistakes = try container.decode(Int.self, forKey: .careMistakes)
+        wins = try container.decode(Int.self, forKey: .wins)
+        losses = try container.decode(Int.self, forKey: .losses)
+        lastUpdateTime = try container.decode(Date.self, forKey: .lastUpdateTime)
+        evolutionSeconds = try container.decode(Double.self, forKey: .evolutionSeconds)
+        timeMultiplier = try container.decode(Double.self, forKey: .timeMultiplier)
+        hungerZeroSeconds = try container.decode(Double.self, forKey: .hungerZeroSeconds)
+        dirtySeconds = try container.decode(Double.self, forKey: .dirtySeconds)
+        sickSeconds = try container.decode(Double.self, forKey: .sickSeconds)
+        unlockedStages = try container.decode(Set<EvolutionStage>.self, forKey: .unlockedStages)
+        stepsApplied = try container.decode(Int.self, forKey: .stepsApplied)
+        weather = try container.decode(Weather.self, forKey: .weather)
+        weatherSeconds = try container.decode(Double.self, forKey: .weatherSeconds)
+        
+        points = try container.decodeIfPresent(Int.self, forKey: .points) ?? 0
+        rainCoatCount = try container.decodeIfPresent(Int.self, forKey: .rainCoatCount) ?? 0
+        premiumVitaminCount = try container.decodeIfPresent(Int.self, forKey: .premiumVitaminCount) ?? 0
+        iceCreamCount = try container.decodeIfPresent(Int.self, forKey: .iceCreamCount) ?? 0
+        toyCount = try container.decodeIfPresent(Int.self, forKey: .toyCount) ?? 0
+        
+        rainCoatActiveSeconds = try container.decodeIfPresent(Double.self, forKey: .rainCoatActiveSeconds) ?? 0.0
+        iceCreamActiveSeconds = try container.decodeIfPresent(Double.self, forKey: .iceCreamActiveSeconds) ?? 0.0
+        
+        lastProcessedSteps = try container.decodeIfPresent(Int.self, forKey: .lastProcessedSteps) ?? 0
+        lastProcessedExercise = try container.decodeIfPresent(Int.self, forKey: .lastProcessedExercise) ?? 0
+        lastProcessedCalories = try container.decodeIfPresent(Double.self, forKey: .lastProcessedCalories) ?? 0.0
+        lastProcessedSleep = try container.decodeIfPresent(Double.self, forKey: .lastProcessedSleep) ?? 0.0
+        lastProcessedDate = try container.decodeIfPresent(Date.self, forKey: .lastProcessedDate)
+        currentTheme = try container.decodeIfPresent(BacklightTheme.self, forKey: .currentTheme) ?? .classic
+        unlockedThemes = try container.decodeIfPresent(Set<BacklightTheme>.self, forKey: .unlockedThemes) ?? [.classic]
     }
     
     // MARK: - Core Actions
@@ -222,6 +350,14 @@ public struct Pet: Codable, Equatable {
             weather = Weather.allCases.randomElement() ?? .sunny
         }
         
+        // Atualiza timers dos itens ativos
+        if rainCoatActiveSeconds > 0 {
+            rainCoatActiveSeconds = max(0, rainCoatActiveSeconds - gameTimeElapsed)
+        }
+        if iceCreamActiveSeconds > 0 {
+            iceCreamActiveSeconds = max(0, iceCreamActiveSeconds - gameTimeElapsed)
+        }
+        
         // 1. Envelhecimento (1 dia de jogo = 86400 segundos de jogo)
         evolutionSeconds += gameTimeElapsed
         let daysPassed = Int(evolutionSeconds / 86400.0)
@@ -230,8 +366,13 @@ public struct Pet: Codable, Equatable {
         }
         
         // 2. Fome decai (1 nível a cada 1800 segundos de jogo / 30 minutos)
-        // Se estiver nevando, a fome decai 1.5x mais rápido
-        let hungerMultiplier = (weather == .snowy) ? 1.5 : 1.0
+        var hungerMultiplier = 1.0
+        if weather == .snowy {
+            hungerMultiplier = 1.5
+        } else if weather == .heatwave {
+            // Se o Sorvete estiver ativo, anula o dreno acelerado do calor
+            hungerMultiplier = (iceCreamActiveSeconds > 0) ? 1.0 : 2.0
+        }
         let hungerDecayRate = 1800.0 / hungerMultiplier
         let hungerDecaySteps = Int(gameTimeElapsed / hungerDecayRate)
         if hungerDecaySteps > 0 {
@@ -254,8 +395,16 @@ public struct Pet: Codable, Equatable {
             }
         } else {
             // Acordado gasta 1 energia a cada 7200 segundos (2 horas)
-            // Se estiver chovendo, energia decai 1.5x mais rápido
-            let energyMultiplier = (weather == .rainy) ? 1.5 : 1.0
+            var energyMultiplier = 1.0
+            // Se a capa de chuva estiver ativa, ignora a aceleração da chuva e tempestade
+            let isProtected = (rainCoatActiveSeconds > 0)
+            if !isProtected {
+                if weather == .rainy {
+                    energyMultiplier = 1.5
+                } else if weather == .thunderstorm {
+                    energyMultiplier = 2.0
+                }
+            }
             let energyDecayRate = 7200.0 / energyMultiplier
             let energyDecaySteps = Int(gameTimeElapsed / energyDecayRate)
             if energyDecaySteps > 0 {
@@ -313,7 +462,10 @@ public struct Pet: Codable, Equatable {
             return
         }
         
-        // 7. Checa evolução
+        // 7. Checa temas de backlight desbloqueáveis
+        checkThemeUnlocks()
+        
+        // 8. Checa evolução
         checkEvolutionConditions()
     }
     
@@ -563,48 +715,294 @@ public struct Pet: Codable, Equatable {
         unlockedStages.insert(stage)
     }
     
-    // MARK: - HealthKit Steps Integration
+    // MARK: - HealthKit & Shop Integration
     
-    public mutating func applySteps(_ totalSteps: Int) {
-        guard isAlive && stage.tier != .egg else { return }
+    public mutating func applyHealthKitData<G: RandomNumberGenerator>(
+        steps: Int,
+        exerciseMinutes: Int,
+        activeCalories: Double,
+        sleepHours: Double,
+        currentDate: Date = Date(),
+        using generator: inout G
+    ) {
+        guard isAlive else { return }
         
-        // Se for a primeira inicialização ou passos reiniciados
-        if stepsApplied > totalSteps {
-            stepsApplied = totalSteps
-            return
+        let calendar = Calendar.current
+        var isNewDay = false
+        if let lastDate = lastProcessedDate {
+            isNewDay = !calendar.isDate(lastDate, inSameDayAs: currentDate)
+        } else {
+            isNewDay = true
         }
         
-        let newSteps = totalSteps - stepsApplied
-        guard newSteps >= 1000 else { return }
-        
-        let bonuses = newSteps / 1000
-        stepsApplied += bonuses * 1000
-        
-        // A cada 1000 passos:
-        // 1. Cura 5 de saúde
-        health = min(100, health + (5 * bonuses))
-        
-        // 2. Limpa cocôs (walked off!)
-        if poopCount > 0 {
-            poopCount = max(0, poopCount - bonuses)
+        // Reset de novo dia ou reset de contador do HealthKit
+        if isNewDay || steps < lastProcessedSteps || exerciseMinutes < lastProcessedExercise || activeCalories < lastProcessedCalories || sleepHours < lastProcessedSleep {
+            lastProcessedSteps = 0
+            lastProcessedExercise = 0
+            lastProcessedCalories = 0.0
+            lastProcessedSleep = 0.0
         }
         
-        // 3. Aumenta energia
-        energy = min(4, energy + bonuses)
+        lastProcessedDate = currentDate
         
-        // 4. Ajuda a curar doença (20% de chance por bônus)
-        if isSick {
-            for _ in 0..<bonuses {
-                if Double.random(in: 0...1) < 0.20 {
-                    isSick = false
-                    sickSeconds = 0
-                    break
+        // 1. Processar Passos
+        let stepDelta = steps - lastProcessedSteps
+        if stepDelta >= 500 {
+            let stepBlocks = stepDelta / 500
+            lastProcessedSteps += stepBlocks * 500
+            
+            // +1 ponto a cada 500 passos
+            points += stepBlocks
+            
+            if stage.tier != .egg {
+                // Efeitos diretos de passos baseados no clima:
+                // 1. Saúde: +2 HP por bloco (ou +4 HP se ensolarado)
+                let hpGain = (weather == .sunny) ? 4 : 2
+                health = min(100, health + (hpGain * stepBlocks))
+                
+                // 2. Limpar cocô
+                // Se chovendo ou tempestade, limpa 1 cocô por bloco (banho de chuva!)
+                if (weather == .rainy || weather == .thunderstorm) && poopCount > 0 {
+                    poopCount = max(0, poopCount - stepBlocks)
+                    
+                    // 10% de chance de pegar resfriado se a energia for zero
+                    if energy == 0 && Double.random(in: 0...1, using: &generator) < 0.10 {
+                        isSick = true
+                    }
+                } else if poopCount > 0 {
+                    // Limpeza normal de cocô: 50% de chance a cada bloco
+                    for _ in 0..<stepBlocks {
+                        if Double.random(in: 0...1, using: &generator) < 0.5 && poopCount > 0 {
+                            poopCount -= 1
+                        }
+                    }
                 }
+                
+                // 3. Energia (50% de chance de recuperar 1 por bloco)
+                for _ in 0..<stepBlocks {
+                    if Double.random(in: 0...1, using: &generator) < 0.5 {
+                        energy = min(4, energy + 1)
+                    }
+                }
+                
+                // 4. Ajuda a curar doença (10% de chance por bloco)
+                if isSick {
+                    for _ in 0..<stepBlocks {
+                        if Double.random(in: 0...1, using: &generator) < 0.10 {
+                            isSick = false
+                            sickSeconds = 0
+                            break
+                        }
+                    }
+                }
+                
+                // 5. Queima calorias / perda de peso
+                // Se for onda de calor, queima 1g por bloco. Caso contrário, 50% de chance.
+                var weightLoss = 0
+                for _ in 0..<stepBlocks {
+                    if weather == .heatwave || Double.random(in: 0...1, using: &generator) < 0.5 {
+                        weightLoss += 1
+                    }
+                }
+                weight = max(5, weight - weightLoss)
+                
+                // 6. Neve concede força a cada 2000 passos (4 blocos de 500)
+                if weather == .snowy {
+                    let oldStrengthBlocks = (lastProcessedSteps - stepBlocks * 500) / 2000
+                    let newStrengthBlocks = lastProcessedSteps / 2000
+                    let strengthGain = newStrengthBlocks - oldStrengthBlocks
+                    if strengthGain > 0 {
+                        strength = min(4, strength + strengthGain)
+                    }
+                }
+            }
+            stepsApplied = lastProcessedSteps
+        }
+        
+        // 2. Processar Tempo de Exercício
+        let exerciseDelta = exerciseMinutes - lastProcessedExercise
+        if exerciseDelta >= 10 {
+            let exerciseBlocks = exerciseDelta / 10
+            lastProcessedExercise += exerciseBlocks * 10
+            
+            // +5 pontos por 10 minutos
+            points += exerciseBlocks * 5
+            
+            if stage.tier != .egg {
+                // Recupera +1 de energia por bloco
+                energy = min(4, energy + exerciseBlocks)
             }
         }
         
-        // 5. Queima calorias (perda de peso)
-        weight = max(5, weight - bonuses)
+        // 3. Processar Calorias Ativas
+        let caloriesDelta = activeCalories - lastProcessedCalories
+        if caloriesDelta >= 50.0 {
+            let calorieBlocks = Int(caloriesDelta / 50.0)
+            lastProcessedCalories += Double(calorieBlocks) * 50.0
+            
+            // +2 pontos por 50 kcal
+            points += calorieBlocks * 2
+            
+            if stage.tier != .egg {
+                // Queima peso (-1g por bloco)
+                weight = max(5, weight - calorieBlocks)
+            }
+        }
+        
+        // 4. Processar Horas de Sono
+        let sleepDelta = sleepHours - lastProcessedSleep
+        if sleepDelta >= 6.0 {
+            let sleepBlocks = Int(sleepDelta / 6.0)
+            lastProcessedSleep += Double(sleepBlocks) * 6.0
+            
+            // +15 pontos por 6 horas de sono
+            points += sleepBlocks * 15
+            
+            if stage.tier != .egg {
+                // Cura doenças e recupera totalmente a saúde do Pet
+                isSick = false
+                sickSeconds = 0
+                health = 100
+            }
+        }
+    }
+    
+    public mutating func applyHealthKitData(
+        steps: Int,
+        exerciseMinutes: Int,
+        activeCalories: Double,
+        sleepHours: Double,
+        currentDate: Date = Date()
+    ) {
+        var g = SystemRandomNumberGenerator()
+        applyHealthKitData(
+            steps: steps,
+            exerciseMinutes: exerciseMinutes,
+            activeCalories: activeCalories,
+            sleepHours: sleepHours,
+            currentDate: currentDate,
+            using: &g
+        )
+    }
+    
+    public mutating func applySteps<G: RandomNumberGenerator>(_ totalSteps: Int, using generator: inout G) {
+        applyHealthKitData(
+            steps: totalSteps,
+            exerciseMinutes: lastProcessedExercise,
+            activeCalories: lastProcessedCalories,
+            sleepHours: lastProcessedSleep,
+            using: &generator
+        )
+    }
+    
+    public mutating func applySteps(_ totalSteps: Int) {
+        var g = SystemRandomNumberGenerator()
+        applySteps(totalSteps, using: &g)
+    }
+    
+    // MARK: - Shop Actions
+    
+    public mutating func buyItem(_ item: ShopItemType) -> Bool {
+        guard points >= item.cost else { return false }
+        points -= item.cost
+        
+        switch item {
+        case .rainCoat:
+            rainCoatCount += 1
+        case .premiumVitamin:
+            premiumVitaminCount += 1
+        case .iceCream:
+            iceCreamCount += 1
+        case .toy:
+            toyCount += 1
+        }
+        return true
+    }
+    
+    public mutating func useItem(_ item: ShopItemType) -> Bool {
+        guard isAlive && !isSleeping else { return false }
+        
+        switch item {
+        case .rainCoat:
+            guard rainCoatCount > 0 else { return false }
+            rainCoatCount -= 1
+            // Ativa a capa de chuva por 4 horas de jogo (14400 segundos)
+            rainCoatActiveSeconds += 14400.0
+            
+        case .premiumVitamin:
+            guard premiumVitaminCount > 0 else { return false }
+            premiumVitaminCount -= 1
+            // Aumenta força (+2), cura doença com 100% de eficácia, e regenera vida
+            strength = min(4, strength + 2)
+            isSick = false
+            sickSeconds = 0
+            health = min(100, health + 20)
+            
+        case .iceCream:
+            guard iceCreamCount > 0 else { return false }
+            iceCreamCount -= 1
+            // Restaura fome (+2) e concede proteção contra calor por 4 horas de jogo (14400 segundos)
+            hunger = min(4, hunger + 2)
+            iceCreamActiveSeconds += 14400.0
+            
+        case .toy:
+            guard toyCount > 0 else { return false }
+            toyCount -= 1
+            // Aumenta energia (+2), reduz peso (-2g) e restaura saúde (+10)
+            energy = min(4, energy + 2)
+            weight = max(5, weight - 2)
+            health = min(100, health + 10)
+        }
+        
+        checkAttention()
+        return true
+    }
+    
+    // MARK: - Backlight Themes
+    
+    public mutating func checkThemeUnlocks() {
+        // Amber Vintage (Laranja): Conquista por ter Pet com idade >= 3 dias
+        if age >= 3 {
+            unlockedThemes.insert(.amber)
+        }
+        
+        // Cyberpunk (Vermelho Virtual): Conquista por obter a primeira vitória em batalha
+        if wins >= 1 {
+            unlockedThemes.insert(.virtual)
+        }
+        
+        // Golden LCD (Dourado): Conquista por evoluir qualquer Pet ao estágio Adulto (Tier >= 4)
+        let hasAdultOrPerfect = unlockedStages.contains { stage in
+            stage.tier == .adult || stage.tier == .perfect
+        }
+        if hasAdultOrPerfect {
+            unlockedThemes.insert(.golden)
+        }
+    }
+    
+    public mutating func buyTheme(_ theme: BacklightTheme) -> Bool {
+        if unlockedThemes.contains(theme) {
+            return true
+        }
+        
+        let cost: Int
+        switch theme {
+        case .indiglo:
+            cost = 40
+        case .stealth:
+            cost = 25
+        default:
+            return false
+        }
+        
+        if points >= cost {
+            points -= cost
+            unlockedThemes.insert(theme)
+            save()
+            return true
+        }
+        
+        return false
     }
     
     // MARK: - Persistence

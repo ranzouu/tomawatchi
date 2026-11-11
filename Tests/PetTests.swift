@@ -1,5 +1,19 @@
 import XCTest
 
+struct SeededRandomNumberGenerator: RandomNumberGenerator {
+    private var state: UInt64
+    
+    init(seed: UInt64) {
+        self.state = seed
+    }
+    
+    mutating func next() -> UInt64 {
+        // LCG simples (parâmetros do MMIX de Donald Knuth)
+        state = state &* 6364136223846793005 &+ 1442695040888963407
+        return state
+    }
+}
+
 final class PetTests: XCTestCase {
     
     func testInitialState() {
@@ -208,14 +222,15 @@ final class PetTests: XCTestCase {
         pet.weight = 15
         pet.isSick = true
         
-        // Aplica 2000 passos (deve gerar 2 bônus)
-        pet.applySteps(2000)
+        // Aplica 2000 passos com semente determinística
+        var g = SeededRandomNumberGenerator(seed: 42)
+        pet.applySteps(2000, using: &g)
         
         XCTAssertEqual(pet.stepsApplied, 2000)
-        XCTAssertEqual(pet.health, 60) // 50 + 5 * 2
-        XCTAssertEqual(pet.poopCount, 0) // Limpou os 2 cocôs
-        XCTAssertEqual(pet.energy, 4) // 2 + 2
-        XCTAssertEqual(pet.weight, 13) // 15 - 2
+        XCTAssertEqual(pet.health, 66) // 50 + 4 * 4 (sunny)
+        XCTAssertEqual(pet.poopCount, 0) // Determinístico para a semente 42
+        XCTAssertEqual(pet.energy, 4) // Determinístico para a semente 42
+        XCTAssertEqual(pet.weight, 13) // Determinístico para a semente 42
     }
     
     func testWeatherDecay() {
@@ -317,5 +332,132 @@ final class PetTests: XCTestCase {
         pet.losses = 1
         pet.updateState(currentTime: initialDate.addingTimeInterval(65 + 605 + 3605 + 7205))
         XCTAssertEqual(pet.stage, .toxicspore)
+    }
+    
+    func testWeatherDecayThunderstormAndHeatwave() {
+        // Tempestade elétrica: drena energia 2x mais rápido (1 dreno a cada 7200 / 2 = 3600 segundos de jogo)
+        var petStorm = Pet(timeMultiplier: 1.0)
+        petStorm.weather = .thunderstorm
+        petStorm.stage = .tomaDrake
+        petStorm.energy = 4
+        
+        let initialDate = petStorm.lastUpdateTime
+        
+        petStorm.updateState(currentTime: initialDate.addingTimeInterval(3605))
+        XCTAssertEqual(petStorm.energy, 3)
+        
+        // Onda de calor: drena fome 2x mais rápido (1 dreno a cada 1800 / 2 = 900 segundos de jogo)
+        var petHeat = Pet(timeMultiplier: 1.0)
+        petHeat.weather = .heatwave
+        petHeat.stage = .tomaDrake
+        petHeat.hunger = 4
+        
+        petHeat.updateState(currentTime: initialDate.addingTimeInterval(905))
+        XCTAssertEqual(petHeat.hunger, 3)
+    }
+    
+    func testApplyHealthKitDataPointsAndBuffs() {
+        var pet = Pet()
+        pet.stage = .tomaDrake
+        pet.health = 50
+        pet.energy = 2
+        pet.weight = 15
+        
+        let initialDate = Date()
+        var g = SeededRandomNumberGenerator(seed: 42)
+        
+        // Aplica: 2000 passos (4 blocos de 500) -> +4 pontos
+        // 20 min de exercício (2 blocos de 10) -> +10 pontos, +2 energia
+        // 100 kcal (2 blocos de 50) -> +4 pontos, -2g
+        // 6 horas de sono (1 bloco de 6h) -> +15 pontos, cura/saúde total 100
+        pet.applyHealthKitData(steps: 2000, exerciseMinutes: 20, activeCalories: 100.0, sleepHours: 6.0, currentDate: initialDate, using: &g)
+        
+        // Total de pontos: 4 (passos) + 10 (exercício) + 4 (calorias) + 15 (sono) = 33 pontos
+        XCTAssertEqual(pet.points, 33)
+        XCTAssertEqual(pet.energy, 4) // 2 + 2 = 4 (capado em 4)
+        XCTAssertEqual(pet.weight, 10) // 15 - 2 = 13 (calorias) - 3 (passos com semente 42) = 10
+        XCTAssertEqual(pet.health, 100) // sono restaurou a saúde total
+        
+        // Valida se o dia seguinte limpa os acumulados diários
+        let nextDay = initialDate.addingTimeInterval(86400)
+        pet.applyHealthKitData(steps: 500, exerciseMinutes: 0, activeCalories: 0.0, sleepHours: 0.0, currentDate: nextDay, using: &g)
+        
+        // Ganhou mais 1 ponto (33 + 1 = 34)
+        XCTAssertEqual(pet.points, 34)
+        XCTAssertEqual(pet.lastProcessedSteps, 500)
+    }
+    
+    func testShopBuyAndItemUsage() {
+        var pet = Pet()
+        pet.stage = .tomaDrake
+        pet.points = 100
+        pet.health = 40
+        pet.strength = 1
+        pet.isSick = true
+        
+        // Compra uma capa de chuva (custo 20)
+        let successBuy = pet.buyItem(.rainCoat)
+        XCTAssertTrue(successBuy)
+        XCTAssertEqual(pet.rainCoatCount, 1)
+        XCTAssertEqual(pet.points, 80)
+        
+        // Tenta usar a capa de chuva
+        let successUse = pet.useItem(.rainCoat)
+        XCTAssertTrue(successUse)
+        XCTAssertEqual(pet.rainCoatCount, 0)
+        XCTAssertEqual(pet.rainCoatActiveSeconds, 14400.0) // 4 horas
+        
+        // Compra e usa uma vitamina premium (custo 30)
+        _ = pet.buyItem(.premiumVitamin)
+        _ = pet.useItem(.premiumVitamin)
+        
+        XCTAssertEqual(pet.points, 50)
+        XCTAssertEqual(pet.strength, 3) // 1 + 2 = 3
+        XCTAssertFalse(pet.isSick) // curado!
+        XCTAssertEqual(pet.health, 60) // 40 + 20 = 60
+    }
+    
+    func testBacklightThemes() {
+        var pet = Pet()
+        pet.stage = .tomaDrake
+        
+        // 1. Inicial
+        XCTAssertEqual(pet.currentTheme, .classic)
+        XCTAssertTrue(pet.unlockedThemes.contains(.classic))
+        XCTAssertFalse(pet.unlockedThemes.contains(.indiglo))
+        
+        // 2. Compra sem pontos
+        XCTAssertFalse(pet.buyTheme(.indiglo))
+        
+        // 3. Compra com pontos
+        pet.points = 100
+        XCTAssertTrue(pet.buyTheme(.indiglo))
+        XCTAssertEqual(pet.points, 60)
+        XCTAssertTrue(pet.unlockedThemes.contains(.indiglo))
+        
+        // 4. Compra stealth
+        XCTAssertTrue(pet.buyTheme(.stealth))
+        XCTAssertEqual(pet.points, 35)
+        XCTAssertTrue(pet.unlockedThemes.contains(.stealth))
+        
+        // 5. Compra tema que é conquista (amber)
+        XCTAssertFalse(pet.buyTheme(.amber))
+        
+        // 6. Conquista Amber (idade >= 3)
+        pet.age = 3
+        pet.updateState(currentTime: Date())
+        XCTAssertTrue(pet.unlockedThemes.contains(.amber))
+        
+        // 7. Conquista Cyberpunk (vitórias >= 1)
+        XCTAssertFalse(pet.unlockedThemes.contains(.virtual))
+        pet.wins = 1
+        pet.updateState(currentTime: Date())
+        XCTAssertTrue(pet.unlockedThemes.contains(.virtual))
+        
+        // 8. Conquista Golden (Adulto/Perfeito em unlockedStages)
+        XCTAssertFalse(pet.unlockedThemes.contains(.golden))
+        pet.unlockedStages.insert(.drakeLord) // DrakeLord é adulto
+        pet.updateState(currentTime: Date())
+        XCTAssertTrue(pet.unlockedThemes.contains(.golden))
     }
 }

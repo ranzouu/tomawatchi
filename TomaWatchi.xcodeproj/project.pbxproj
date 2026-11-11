@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B8C7939948A3F493BC644F2 /* TomaWatchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */; };
 		12FBE57644A8EF3E20C468C4 /* PetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E7EDC172E232E6D006580B /* PetTests.swift */; };
-		1748DE8D022B6E2644741D7B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
 		1DFD7F70E21441FA339CE470 /* Sprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA30C827751D8921D27DE06 /* Sprites.swift */; };
 		2FA023A66636AE9F4160C62D /* StatusDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */; };
-		3BB674033C6925A76D60746B /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
 		3EBE9463FB85172CA1C3B00D /* TomaWatchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DF0C2F2BBB41A3C6A0D427 /* TomaWatchiApp.swift */; };
 		40617BD7F4F2487F18FC7B81 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632F3C9DCA23DEF64747261B /* Pet.swift */; };
 		42A52DD8AC86A80867C208B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
@@ -21,7 +18,6 @@
 		5331D2FFA0387A5AC9830D3A /* MultipeerBattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */; };
 		64D3373D02936D91CB4A576C /* EvolutionStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6579B87012C4B816260359D /* EvolutionStage.swift */; };
 		849DE841441383E73E7439DE /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
-		86B7459AD3E73F16C5217B2A /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655F7E903513D5F52F187A1 /* BattleView.swift */; };
 		900F075F0EF4873D57D33513 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
 		93D10CBD34F1E5F5663428E5 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
 		99472DE5D1EC8209524573D8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4064CF68E7EB420743030B9E /* ContentView.swift */; };
@@ -35,11 +31,7 @@
 		CF63FD5FE05432685918F4E8 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
 		D5532F1E671AB5241C62B479 /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655F7E903513D5F52F187A1 /* BattleView.swift */; };
 		DD7F6431CD286E7B85D301DA /* EvolutionStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6579B87012C4B816260359D /* EvolutionStage.swift */; };
-		DE45DFD832E9FCFE136CF871 /* MultipeerBattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF0122A3A8824FA1717EDF6 /* MultipeerBattleView.swift */; };
-		E535ABC0D42372BC77C48F97 /* CiclopediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714D9441809D5AC908082ACE /* CiclopediaView.swift */; };
-		E575C72D95A03214DA7FEB05 /* StatusDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE9DBD4C61005A2B6AA2520 /* StatusDetailsView.swift */; };
 		E83F1CC1767EFCB2787E04C9 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
-		EDDA750D2E4663D4FFC55516 /* PixelSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE3C71AA160A6C03D6ACD6 /* PixelSpriteView.swift */; };
 		F7F20080985D1834E54D9C16 /* MinigameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754F933A926FCFC619EB298E /* MinigameView.swift */; };
 /* End PBXBuildFile section */
 
@@ -214,18 +206,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86B7459AD3E73F16C5217B2A /* BattleView.swift in Sources */,
-				E535ABC0D42372BC77C48F97 /* CiclopediaView.swift in Sources */,
-				1748DE8D022B6E2644741D7B /* ContentView.swift in Sources */,
 				64D3373D02936D91CB4A576C /* EvolutionStage.swift in Sources */,
-				3BB674033C6925A76D60746B /* MinigameView.swift in Sources */,
-				DE45DFD832E9FCFE136CF871 /* MultipeerBattleView.swift in Sources */,
 				B48A9C752A170C022051E348 /* Pet.swift in Sources */,
 				12FBE57644A8EF3E20C468C4 /* PetTests.swift in Sources */,
-				EDDA750D2E4663D4FFC55516 /* PixelSpriteView.swift in Sources */,
 				1DFD7F70E21441FA339CE470 /* Sprites.swift in Sources */,
-				E575C72D95A03214DA7FEB05 /* StatusDetailsView.swift in Sources */,
-				0B8C7939948A3F493BC644F2 /* TomaWatchiApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

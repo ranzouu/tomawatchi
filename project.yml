@@ -51,7 +51,7 @@ targets:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - path: Sources
+      - path: Sources/Model
       - path: Tests
     settings:
       base:

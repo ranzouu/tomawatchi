@@ -45,6 +45,8 @@ public struct ContentView: View {
         case ciclopedia
         case multipeerBattle
         case selectEgg
+        case shop
+        case backlightCustomization
         
         public var id: Int {
             switch self {
@@ -54,6 +56,8 @@ public struct ContentView: View {
             case .ciclopedia: return 3
             case .multipeerBattle: return 4
             case .selectEgg: return 5
+            case .shop: return 6
+            case .backlightCustomization: return 7
             }
         }
     }
@@ -69,13 +73,27 @@ public struct ContentView: View {
         invertColors ? .white : .black
     }
     
+    private var currentPixelColor: Color {
+        pet.currentTheme.pixelColor
+    }
+    
+    private var currentShadowColor: Color {
+        pet.currentTheme.shadowColor
+    }
+    
     public var body: some View {
         TabView {
             // MARK: - TAB 1: Pet Room
             GeometryReader { geo in
                 ZStack {
-                    screenBackground
-                        .edgesIgnoringSafeArea(.all)
+                    RadialGradient(
+                        colors: [pet.currentTheme.backgroundColor, pet.currentTheme.backgroundColor.opacity(0.82)],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 120
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                    .overlay(LCDGridOverlay())
                     
                     // Main layout
                     VStack(spacing: 2) {
@@ -95,20 +113,23 @@ public struct ContentView: View {
                             // Weather indicator
                             Image(systemName: pet.weather.iconName)
                                 .font(.system(.caption2))
-                                .foregroundColor(pixelColor)
+                                .foregroundColor(currentPixelColor)
+                                .lcdPixelStyle(shadowColor: currentShadowColor)
                             
                             // Attention needed flashing icon
                             if pet.attentionNeeded {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .font(.system(.caption2))
-                                    .foregroundColor(frameIndex % 2 == 0 ? pixelColor : .clear)
+                                    .foregroundColor(frameIndex % 2 == 0 ? currentPixelColor : .clear)
+                                    .lcdPixelStyle(shadowColor: frameIndex % 2 == 0 ? currentShadowColor : .clear)
                             }
                             
                             // Sick indicator
                             if pet.isSick {
                                 Image(systemName: "skull.fill")
                                     .font(.system(.caption2))
-                                    .foregroundColor(pixelColor)
+                                    .foregroundColor(currentPixelColor)
+                                    .lcdPixelStyle(shadowColor: currentShadowColor)
                             }
                         }
                         .padding(.horizontal, 8)
@@ -116,40 +137,53 @@ public struct ContentView: View {
                         
                         // 2. Pet Screen Boundary Box
                         ZStack {
-                            Rectangle()
-                                .stroke(pixelColor, lineWidth: 2)
+                            // Moldura física 3D do visor (Bezel)
+                            RoundedRectangle(cornerRadius: 6)
+                                .strokeBorder(
+                                    LinearGradient(
+                                        colors: [currentPixelColor.opacity(0.4), currentPixelColor.opacity(0.1)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 2.5
+                                )
                             
                             // Pet render or Tombstone
                             if pet.isAlive {
                                 if isEating {
                                     // Eating animation
                                     HStack(spacing: 8) {
-                                        PixelSpriteView(frame: Sprites.animation(for: pet.stage, frameIndex: frameIndex), pixelColor: pixelColor)
+                                        PixelSpriteView(frame: Sprites.animation(for: pet.stage, frameIndex: frameIndex), pixelColor: currentPixelColor)
                                             .frame(width: 44, height: 44)
                                             .offset(x: frameIndex % 2 == 0 ? 5 : -5)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                         
-                                        PixelSpriteView(frame: Sprites.meat, pixelColor: pixelColor)
+                                        PixelSpriteView(frame: Sprites.meat, pixelColor: currentPixelColor)
                                             .frame(width: 20, height: 20)
                                             .scaleEffect(frameIndex % 2 == 0 ? 0.7 : 1.0)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                     }
                                 } else {
                                     // Normal sprite
-                                    PixelSpriteView(frame: Sprites.animation(for: pet.stage, frameIndex: frameIndex), pixelColor: pixelColor)
+                                    PixelSpriteView(frame: Sprites.animation(for: pet.stage, frameIndex: frameIndex), pixelColor: currentPixelColor)
                                         .frame(width: 50, height: 50)
                                         .offset(y: pet.isSleeping ? 10 : 0)
+                                        .lcdPixelStyle(shadowColor: currentShadowColor)
                                 }
                             } else {
                                 // Dead
-                                PixelSpriteView(frame: Sprites.tombstone, pixelColor: pixelColor)
+                                PixelSpriteView(frame: Sprites.tombstone, pixelColor: currentPixelColor)
                                     .frame(width: 50, height: 50)
+                                    .lcdPixelStyle(shadowColor: currentShadowColor)
                             }
                             
                             // Render Poop if present
                             if pet.poopCount > 0 {
                                 HStack(spacing: 2) {
                                     ForEach(0..<pet.poopCount, id: \.self) { _ in
-                                        PixelSpriteView(frame: Sprites.poop, pixelColor: pixelColor)
+                                        PixelSpriteView(frame: Sprites.poop, pixelColor: currentPixelColor)
                                             .frame(width: 14, height: 14)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                     }
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -160,20 +194,30 @@ public struct ContentView: View {
                             // Broom sweep animation
                             if isCleaning {
                                 Rectangle()
-                                    .fill(pixelColor)
+                                    .fill(currentPixelColor)
                                     .frame(width: 12, height: geo.size.height)
                                     .offset(x: showBroomOffset)
+                                    .lcdPixelStyle(shadowColor: currentShadowColor)
                             }
                             
                             // Weather particles overlay
                             if pet.isAlive && !pet.isSleeping {
                                 Group {
                                     if pet.weather == .rainy {
-                                        RainOverlayView(frameIndex: frameIndex, color: pixelColor)
+                                        RainOverlayView(frameIndex: frameIndex, color: currentPixelColor)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                     } else if pet.weather == .snowy {
-                                        SnowOverlayView(frameIndex: frameIndex, color: pixelColor)
+                                        SnowOverlayView(frameIndex: frameIndex, color: currentPixelColor)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                     } else if pet.weather == .sunny {
-                                        SunOverlayView(color: pixelColor)
+                                        SunOverlayView(color: currentPixelColor)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
+                                    } else if pet.weather == .thunderstorm {
+                                        ThunderstormOverlayView(frameIndex: frameIndex, color: currentPixelColor)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
+                                    } else if pet.weather == .heatwave {
+                                        HeatwaveOverlayView(frameIndex: frameIndex, color: currentPixelColor)
+                                            .lcdPixelStyle(shadowColor: currentShadowColor)
                                     }
                                 }
                             }
@@ -194,9 +238,14 @@ public struct ContentView: View {
                         // 3. Mini status string
                         Text(petStatusText())
                             .font(.system(.caption2, design: .monospaced))
-                            .foregroundColor(pixelColor)
+                            .foregroundColor(currentPixelColor)
+                            .lcdPixelStyle(shadowColor: currentShadowColor)
                             .padding(.bottom, 2)
                     }
+                }
+                .onLongPressGesture {
+                    playHaptic(.success)
+                    activeSheet = .backlightCustomization
                 }
             }
             
@@ -262,11 +311,11 @@ public struct ContentView: View {
                 playHaptic(.retry)
             }
             
-            // Periodically check/fetch HealthKit steps
+            // Periodically check/fetch HealthKit health data
             stepsUpdateCounter += 1
             if stepsUpdateCounter >= 15 {
                 stepsUpdateCounter = 0
-                fetchTodaySteps()
+                fetchTodayHealthData()
             }
             
             // Auto save periodically
@@ -276,7 +325,7 @@ public struct ContentView: View {
         }
         .onAppear {
             requestHealthKitAuth()
-            fetchTodaySteps()
+            fetchTodayHealthData()
         }
     }
     
@@ -406,8 +455,19 @@ public struct ContentView: View {
     @ViewBuilder
     private func sheetView(for sheet: ActiveSheet) -> some View {
         ZStack {
-            screenBackground
+            if sheet == .backlightCustomization {
+                RadialGradient(
+                    colors: [pet.currentTheme.backgroundColor, pet.currentTheme.backgroundColor.opacity(0.82)],
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: 120
+                )
                 .edgesIgnoringSafeArea(.all)
+                .overlay(LCDGridOverlay())
+            } else {
+                screenBackground
+                    .edgesIgnoringSafeArea(.all)
+            }
             
             switch sheet {
             case .status:
@@ -434,6 +494,14 @@ public struct ContentView: View {
                     focusedIndex = 0
                     activeSheet = nil
                 }
+            case .shop:
+                ShopView(pet: $pet, pixelColor: pixelColor) {
+                    activeSheet = nil
+                }
+            case .backlightCustomization:
+                BacklightThemeSelectorView(pet: $pet) {
+                    activeSheet = nil
+                }
             }
         }
     }
@@ -447,7 +515,7 @@ public struct ContentView: View {
         let action: () -> Void
     }
     
-    private func getMenuItems() -> [MenuItem] {
+        private func getMenuItems() -> [MenuItem] {
         var items: [MenuItem] = []
         var nextId = 0
         
@@ -462,6 +530,36 @@ public struct ContentView: View {
                 pet.save()
             })
             nextId += 1
+            
+            // Usar itens do inventário se houver
+            if pet.rainCoatCount > 0 {
+                items.append(MenuItem(id: nextId, title: "Usar Capa de Chuva (x\(pet.rainCoatCount))", icon: "umbrella.fill") {
+                    _ = pet.useItem(.rainCoat)
+                    pet.save()
+                })
+                nextId += 1
+            }
+            if pet.premiumVitaminCount > 0 {
+                items.append(MenuItem(id: nextId, title: "Vitamina Premium (x\(pet.premiumVitaminCount))", icon: "pills.fill") {
+                    _ = pet.useItem(.premiumVitamin)
+                    pet.save()
+                })
+                nextId += 1
+            }
+            if pet.iceCreamCount > 0 {
+                items.append(MenuItem(id: nextId, title: "Sorvete Elemental (x\(pet.iceCreamCount))", icon: "snowflake") {
+                    _ = pet.useItem(.iceCream)
+                    pet.save()
+                })
+                nextId += 1
+            }
+            if pet.toyCount > 0 {
+                items.append(MenuItem(id: nextId, title: "Brinquedo Pixelado (x\(pet.toyCount))", icon: "gamecontroller.fill") {
+                    _ = pet.useItem(.toy)
+                    pet.save()
+                })
+                nextId += 1
+            }
             
             items.append(MenuItem(id: nextId, title: "Treinar Pet", icon: "bolt.fill") {
                 activeSheet = .minigame
@@ -495,6 +593,11 @@ public struct ContentView: View {
             })
             nextId += 1
             
+            items.append(MenuItem(id: nextId, title: "Loja de Itens", icon: "cart.fill") {
+                activeSheet = .shop
+            })
+            nextId += 1
+            
             items.append(MenuItem(id: nextId, title: "Ciclopédia", icon: "book.fill") {
                 activeSheet = .ciclopedia
             })
@@ -524,39 +627,135 @@ public struct ContentView: View {
         #if canImport(HealthKit)
         guard HKHealthStore.isHealthDataAvailable() else { return }
         
-        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
-        let typesToRead: Set<HKObjectType> = [stepType]
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount),
+              let exerciseType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime),
+              let caloriesType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
+              let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return }
+              
+        let typesToRead: Set<HKObjectType> = [stepType, exerciseType, caloriesType, sleepType]
         
         healthStore.requestAuthorization(toShare: nil, read: typesToRead) { success, error in
             if success {
-                fetchTodaySteps()
+                fetchTodayHealthData()
             }
         }
         #endif
     }
     
+    private func fetchTodayHealthData() {
+        fetchTodaySteps()
+        fetchTodayExercise()
+        fetchTodayCalories()
+        fetchTodaySleep()
+    }
+    
     private func fetchTodaySteps() {
         #if canImport(HealthKit)
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
         
         let calendar = Calendar.current
         let now = Date()
         let startOfDay = calendar.startOfDay(for: now)
-        
         let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
         
         let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, error in
             guard let result = result, let sum = result.sumQuantity() else { return }
-            
             let steps = Int(sum.doubleValue(for: HKUnit.count()))
             DispatchQueue.main.async {
                 self.pet.applySteps(steps)
                 self.pet.save()
             }
         }
+        healthStore.execute(query)
+        #endif
+    }
+    
+    private func fetchTodayExercise() {
+        #if canImport(HealthKit)
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard let exerciseType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime) else { return }
         
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfDay = calendar.startOfDay(for: now)
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+        
+        let query = HKStatisticsQuery(quantityType: exerciseType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, error in
+            guard let result = result, let sum = result.sumQuantity() else { return }
+            let minutes = Int(sum.doubleValue(for: HKUnit.minute()))
+            DispatchQueue.main.async {
+                self.pet.applyHealthKitData(
+                    steps: self.pet.lastProcessedSteps,
+                    exerciseMinutes: minutes,
+                    activeCalories: self.pet.lastProcessedCalories,
+                    sleepHours: self.pet.lastProcessedSleep
+                )
+                self.pet.save()
+            }
+        }
+        healthStore.execute(query)
+        #endif
+    }
+    
+    private func fetchTodayCalories() {
+        #if canImport(HealthKit)
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard let caloriesType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
+        
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfDay = calendar.startOfDay(for: now)
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
+        
+        let query = HKStatisticsQuery(quantityType: caloriesType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, error in
+            guard let result = result, let sum = result.sumQuantity() else { return }
+            let calories = sum.doubleValue(for: HKUnit.kilocalorie())
+            DispatchQueue.main.async {
+                self.pet.applyHealthKitData(
+                    steps: self.pet.lastProcessedSteps,
+                    exerciseMinutes: self.pet.lastProcessedExercise,
+                    activeCalories: calories,
+                    sleepHours: self.pet.lastProcessedSleep
+                )
+                self.pet.save()
+            }
+        }
+        healthStore.execute(query)
+        #endif
+    }
+    
+    private func fetchTodaySleep() {
+        #if canImport(HealthKit)
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard let sleepType = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return }
+        
+        let now = Date()
+        let startDate = now.addingTimeInterval(-24 * 3600)
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        
+        let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: 100, sortDescriptors: [sortDescriptor]) { _, samples, error in
+            guard let samples = samples as? [HKCategorySample] else { return }
+            
+            var totalSleepSeconds: TimeInterval = 0
+            for sample in samples {
+                if sample.value != HKCategoryValueSleepAnalysis.inBed.rawValue && sample.value != HKCategoryValueSleepAnalysis.awake.rawValue {
+                    totalSleepSeconds += sample.endDate.timeIntervalSince(sample.startDate)
+                }
+            }
+            
+            let sleepHours = totalSleepSeconds / 3600.0
+            DispatchQueue.main.async {
+                self.pet.applyHealthKitData(
+                    steps: self.pet.lastProcessedSteps,
+                    exerciseMinutes: self.pet.lastProcessedExercise,
+                    activeCalories: self.pet.lastProcessedCalories,
+                    sleepHours: sleepHours
+                )
+                self.pet.save()
+            }
+        }
         healthStore.execute(query)
         #endif
     }
@@ -673,6 +872,72 @@ struct SunOverlayView: View {
     }
 }
 
+struct ThunderstormOverlayView: View {
+    let frameIndex: Int
+    let color: Color
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                if frameIndex % 2 == 0 {
+                    color.opacity(0.15)
+                        .edgesIgnoringSafeArea(.all)
+                }
+                
+                if frameIndex == 0 {
+                    Path { path in
+                        path.move(to: CGPoint(x: geo.size.width * 0.4, y: 0))
+                        path.addLine(to: CGPoint(x: geo.size.width * 0.35, y: 15))
+                        path.addLine(to: CGPoint(x: geo.size.width * 0.5, y: 15))
+                        path.addLine(to: CGPoint(x: geo.size.width * 0.45, y: 35))
+                        path.addLine(to: CGPoint(x: geo.size.width * 0.55, y: 35))
+                        path.addLine(to: CGPoint(x: geo.size.width * 0.48, y: 55))
+                    }
+                    .stroke(color, lineWidth: 1.5)
+                }
+            }
+        }
+        .allowsHitTesting(false)
+    }
+}
+
+struct HeatwaveOverlayView: View {
+    let frameIndex: Int
+    let color: Color
+    
+    var body: some View {
+        GeometryReader { geo in
+            Path { path in
+                let width = geo.size.width
+                let height = geo.size.height
+                let phase = CGFloat(frameIndex) * .pi
+                
+                // Onda 1 (lado esquerdo)
+                for y in stride(from: 0, through: height, by: 4) {
+                    let x = 6 + sin((y / 10.0) + phase) * 2
+                    if y == 0 {
+                        path.move(to: CGPoint(x: x, y: y))
+                    } else {
+                        path.addLine(to: CGPoint(x: x, y: y))
+                    }
+                }
+                
+                // Onda 2 (lado direito)
+                for y in stride(from: 0, through: height, by: 4) {
+                    let x = width - 6 + sin((y / 10.0) + phase) * 2
+                    if y == 0 {
+                        path.move(to: CGPoint(x: x, y: 0))
+                    } else {
+                        path.addLine(to: CGPoint(x: x, y: y))
+                    }
+                }
+            }
+            .stroke(color.opacity(0.4), style: StrokeStyle(lineWidth: 1, lineCap: .round, dash: [2, 2]))
+        }
+        .allowsHitTesting(false)
+    }
+}
+
 struct EggSelectionView: View {
     let pixelColor: Color
     let onSelect: (EvolutionStage) -> Void
@@ -719,6 +984,348 @@ struct EggSelectionView: View {
             }
         }
         .padding()
+    }
+}
+
+struct ShopView: View {
+    @Binding var pet: Pet
+    let pixelColor: Color
+    let onDismiss: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack {
+                Text("LOJA DE ITENS")
+                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .foregroundColor(pixelColor)
+                Spacer()
+                Button(action: {
+                    onDismiss()
+                }) {
+                    Text("VOLTAR")
+                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .foregroundColor(pixelColor)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .border(pixelColor, width: 1)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.horizontal, 4)
+            .padding(.top, 2)
+            
+            Text("SEUS PONTOS: \(pet.points) PTS")
+                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .foregroundColor(pixelColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 4)
+                .padding(.bottom, 2)
+            
+            ScrollView {
+                VStack(spacing: 4) {
+                    ForEach(ShopItemType.allCases) { item in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(item.rawValue.uppercased())
+                                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                    .foregroundColor(pixelColor)
+                                
+                                Text("\(item.cost) PTS • POSSUI: \(getItemCount(item))")
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundColor(pixelColor.opacity(0.7))
+                            }
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                buyItem(item)
+                            }) {
+                                Text("COMPRAR")
+                                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                                    .foregroundColor(pet.points >= item.cost ? .black : pixelColor)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 4)
+                                    .background(pet.points >= item.cost ? pixelColor : Color.clear)
+                                    .border(pixelColor, width: 1)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .disabled(pet.points < item.cost)
+                        }
+                        .padding(4)
+                        .border(pixelColor.opacity(0.3), width: 1)
+                    }
+                }
+                .padding(.horizontal, 4)
+                
+                // Seção de Temas de Backlight
+                Divider()
+                    .background(pixelColor.opacity(0.3))
+                    .padding(.vertical, 2)
+                
+                Text("TEMAS DE BACKLIGHT")
+                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .foregroundColor(pixelColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 4)
+                    .padding(.bottom, 2)
+                
+                let buyableThemes: [BacklightTheme] = [.indiglo, .stealth]
+                VStack(spacing: 4) {
+                    ForEach(buyableThemes) { theme in
+                        HStack {
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(theme.backgroundColor)
+                                .frame(width: 14, height: 14)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .stroke(theme.pixelColor.opacity(0.4), lineWidth: 1)
+                                )
+                            
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(theme.displayName)
+                                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                                    .foregroundColor(pixelColor)
+                                
+                                let unlocked = pet.unlockedThemes.contains(theme)
+                                let cost = theme == .indiglo ? 40 : 25
+                                Text(unlocked ? "DESBLOQUEADO" : "\(cost) PTS")
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundColor(pixelColor.opacity(0.7))
+                            }
+                            
+                            Spacer()
+                            
+                            if !pet.unlockedThemes.contains(theme) {
+                                let cost = theme == .indiglo ? 40 : 25
+                                Button(action: {
+                                    if pet.buyTheme(theme) {
+                                        pet.save()
+                                        playHaptic(.success)
+                                    } else {
+                                        playHaptic(.failure)
+                                    }
+                                }) {
+                                    Text("COMPRAR")
+                                        .font(.system(size: 8, weight: .bold, design: .monospaced))
+                                        .foregroundColor(pet.points >= cost ? .black : pixelColor)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 3)
+                                        .background(pet.points >= cost ? pixelColor : Color.clear)
+                                        .border(pixelColor, width: 1)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .disabled(pet.points < cost)
+                            }
+                        }
+                        .padding(3)
+                        .border(pixelColor.opacity(0.3), width: 1)
+                    }
+                }
+                .padding(.horizontal, 4)
+            }
+        }
+        .padding(4)
+    }
+    
+    private func getItemCount(_ item: ShopItemType) -> Int {
+        switch item {
+        case .rainCoat: return pet.rainCoatCount
+        case .premiumVitamin: return pet.premiumVitaminCount
+        case .iceCream: return pet.iceCreamCount
+        case .toy: return pet.toyCount
+        }
+    }
+    
+    private func buyItem(_ item: ShopItemType) {
+        let success = pet.buyItem(item)
+        if success {
+            pet.save()
+            playHaptic(.success)
+        } else {
+            playHaptic(.failure)
+        }
+    }
+    
+    private func playHaptic(_ type: WatchHapticType) {
+        #if os(watchOS)
+        let wkType: WKHapticType
+        switch type {
+        case .click: wkType = .click
+        case .success: wkType = .success
+        case .failure: wkType = .failure
+        case .retry: wkType = .retry
+        }
+        WKInterfaceDevice.current().play(wkType)
+        #endif
+    }
+}
+
+// MARK: - Backlight SwiftUI Extensions & Helpers
+
+extension BacklightTheme {
+    var backgroundColor: Color {
+        switch self {
+        case .classic: return Color(red: 0.61, green: 0.67, blue: 0.49) // Verde Gameboy
+        case .indiglo: return Color(red: 0.28, green: 0.72, blue: 0.69) // Azul Relógio
+        case .amber: return Color(red: 0.88, green: 0.58, blue: 0.23) // Laranja Vintage
+        case .virtual: return Color(red: 0.82, green: 0.12, blue: 0.15) // Vermelho Virtual
+        case .stealth: return Color(red: 0.18, green: 0.19, blue: 0.20) // Cinza Escuro
+        case .golden: return Color(red: 0.85, green: 0.68, blue: 0.22) // Dourado
+        }
+    }
+    
+    var pixelColor: Color {
+        switch self {
+        case .stealth: return .white
+        case .virtual: return .black
+        default: return Color(red: 0.12, green: 0.14, blue: 0.10) // Cinza-chumbo ativo
+        }
+    }
+    
+    var shadowColor: Color {
+        pixelColor.opacity(0.18)
+    }
+}
+
+struct LCDPixelModifier: ViewModifier {
+    let shadowColor: Color
+    
+    func body(content: Content) -> some View {
+        content
+            .background(
+                content
+                    .foregroundColor(shadowColor)
+                    .offset(x: 1.2, y: 1.2)
+            )
+    }
+}
+
+extension View {
+    func lcdPixelStyle(shadowColor: Color) -> some View {
+        self.modifier(LCDPixelModifier(shadowColor: shadowColor))
+    }
+}
+
+struct LCDGridOverlay: View {
+    var body: some View {
+        GeometryReader { geo in
+            Path { path in
+                let width = geo.size.width
+                let height = geo.size.height
+                
+                // Linhas verticais
+                for x in stride(from: 0, through: width, by: 3) {
+                    path.move(to: CGPoint(x: x, y: 0))
+                    path.addLine(to: CGPoint(x: x, y: height))
+                }
+                
+                // Linhas horizontais
+                for y in stride(from: 0, through: height, by: 3) {
+                    path.move(to: CGPoint(x: 0, y: y))
+                    path.addLine(to: CGPoint(x: width, y: y))
+                }
+            }
+            .stroke(Color.black.opacity(0.04), lineWidth: 0.5)
+        }
+        .allowsHitTesting(false)
+    }
+}
+
+struct BacklightThemeSelectorView: View {
+    @Binding var pet: Pet
+    let onDismiss: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 6) {
+            HStack {
+                Text("BACKLIGHTS")
+                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .foregroundColor(pet.currentTheme.pixelColor)
+                Spacer()
+                Button(action: onDismiss) {
+                    Text("FECHAR")
+                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .foregroundColor(pet.currentTheme.pixelColor)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .border(pet.currentTheme.pixelColor, width: 1)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.horizontal, 4)
+            
+            ScrollView {
+                VStack(spacing: 4) {
+                    ForEach(BacklightTheme.allCases) { theme in
+                        HStack {
+                            // Preview de cor
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(theme.backgroundColor)
+                                .frame(width: 20, height: 20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .stroke(theme.pixelColor.opacity(0.4), lineWidth: 1)
+                                )
+                            
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(theme.displayName)
+                                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                    .foregroundColor(pet.currentTheme.pixelColor)
+                                
+                                if pet.unlockedThemes.contains(theme) {
+                                    Text(pet.currentTheme == theme ? "EQUIPADO" : "DESBLOQUEADO")
+                                        .font(.system(size: 8, design: .monospaced))
+                                        .foregroundColor(pet.currentTheme.pixelColor.opacity(0.6))
+                                } else {
+                                    Text(getUnlockCriteriaString(theme))
+                                        .font(.system(size: 8, design: .monospaced))
+                                        .foregroundColor(pet.currentTheme.pixelColor.opacity(0.6))
+                                }
+                            }
+                            
+                            Spacer()
+                            
+                            if pet.unlockedThemes.contains(theme) {
+                                if pet.currentTheme != theme {
+                                    Button(action: {
+                                        pet.currentTheme = theme
+                                        pet.save()
+                                    }) {
+                                        Text("USAR")
+                                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                                            .foregroundColor(theme.pixelColor)
+                                            .padding(.horizontal, 6)
+                                            .padding(.vertical, 4)
+                                            .border(theme.pixelColor, width: 1)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                }
+                            } else {
+                                Image(systemName: "lock.fill")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(pet.currentTheme.pixelColor.opacity(0.4))
+                                    .padding(.trailing, 6)
+                            }
+                        }
+                        .padding(4)
+                        .border(pet.currentTheme == theme ? pet.currentTheme.pixelColor : pet.currentTheme.pixelColor.opacity(0.2), width: 1)
+                    }
+                }
+                .padding(.horizontal, 4)
+            }
+        }
+        .padding(4)
+    }
+    
+    private func getUnlockCriteriaString(_ theme: BacklightTheme) -> String {
+        switch theme {
+        case .indiglo: return "COMPRA (40 PTS)"
+        case .stealth: return "COMPRA (25 PTS)"
+        case .amber: return "IDADE 3 DIAS+"
+        case .virtual: return "VENCER 1 BATALHA"
+        case .golden: return "ESTÁGIO ADULTO"
+        default: return ""
+        }
     }
 }
 
